@@ -1,0 +1,26 @@
+include:
+  - project: 'pipeline/templates'
+    file: 'ARO-gitlab-ci.yml'
+
+# Link para clonar el repo de manifiestos por SSH
+variables:
+  MANIFEST_REPO: git@gitlab.medicus.com.ar:gitops/encuestas-api-conf.git
+
+# Modificar segun cantidad de ambientes
+deploy-test:
+  extends: .deploy
+  variables:
+    ENVIRONMENT: test
+
+deploy-desa:
+  extends: .deploy
+  variables:
+    ENVIRONMENT: desa
+
+deploy-prod:
+  extends: .deploy
+  variables:
+    ENVIRONMENT: prod
+  # Solo hacer deploys a prod desde main
+  only:
+    - main

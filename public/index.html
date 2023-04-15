@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <title>DeslizaT</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div
+        class="jumbotron text-center mdb-color lighten-2 white-text z-depth-2"
+      >
+        <!--Title-->
+        <h1 class="card-title h2-responsive mt-2 font-bold">
+          <strong>DeslizaT API</strong>
+        </h1>
+        <!--Subtitle-->
+        <p class="mt-4">
+          <strong>Servicio Integral de Administrador de DeslizaT</strong>
+        </p>
+
+        <!--Text-->
+        <div class="d-flex justify-content-center">
+          <p class="card-text my-2" style="max-width: 43rem">
+            <!-- Deslizate es una bicicleteria -->
+            DeslizaT es una bicicleteria que se dedica a la reparación y mantenimiento de bicicletas
+            y venta de accesorios para bicicletas.
+          </p>
+        </div>
+
+        <hr class="my-4 rgba-white-light" />
+
+        <button type="button" class="btn btn-outline-white" id="docu">
+          API Documentation
+        </button>
+      </div>
+    </div>
+    <script>
+      document.getElementById('docu').addEventListener('click', function () {
+        window.open(window.location.origin + '/api-docs/', '_self');
+      });
+    </script>
+  </body>
+</html>
