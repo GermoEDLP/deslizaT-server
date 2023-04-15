@@ -9,48 +9,41 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CategoriesService } from './categories.service';
-import {
-  CreateCategoryDto,
-  QueryFindAllCatgeoriesDto,
-  UpdateCategoryDto,
-} from './dto';
+import { BlankService } from './blank.service';
+import { CreateBlankDto } from './dto/create-blank.dto';
+import { UpdateBlankDto } from './dto/update-blank.dto';
+import { QueryFindAllBlankDto } from './dto/query-find-all.dto';
 import { API_OP } from './config';
 
 @Controller('category')
 @ApiTags('Categories')
 export class CategoriesController {
-  constructor(private readonly categoriesService: CategoriesService) {}
+  constructor(private readonly categoriesService: BlankService) {}
 
   @Post()
-  @ApiOperation(API_OP.CREATE)
-  create(@Body() createCategoryDto: CreateCategoryDto) {
+  create(@Body() createCategoryDto: CreateBlankDto) {
     return this.categoriesService.create(createCategoryDto);
   }
 
   @Get()
-  @ApiOperation(API_OP.FIND_ALL)
-  findAll(@Query() query: QueryFindAllCatgeoriesDto) {
+  findAll(@Query() query: QueryFindAllBlankDto) {
     return this.categoriesService.findAll(query);
   }
 
   @Get(':id')
-  @ApiOperation(API_OP.FIND_ONE)
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation(API_OP.UPDATE)
   update(
     @Param('id') id: string,
-    @Body() updateCategoryDto: UpdateCategoryDto,
+    @Body() updateCategoryDto: UpdateBlankDto,
   ) {
     return this.categoriesService.update(id, updateCategoryDto);
   }
 
   @Delete(':id')
-  @ApiOperation(API_OP.DELETE)
   remove(@Param('id') id: string) {
     return this.categoriesService.remove(id);
   }
