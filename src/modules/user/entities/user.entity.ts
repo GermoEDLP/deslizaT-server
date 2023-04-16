@@ -1,8 +1,9 @@
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { API_PROP } from '../config';
+import { Bike } from 'src/modules/bike/entities';
 
 export class Social {
   @ApiProperty(API_PROP.SOCIAL_TWITTER)
@@ -60,6 +61,9 @@ export class User extends Document {
 
   @Prop({ required: true })
   email: Contact<ContactType.EMAIL>;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Bike' }] })
+  bikes: Bike[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
