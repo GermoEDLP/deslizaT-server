@@ -20,11 +20,11 @@ export class Bike extends Document {
   @Prop()
   type: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  user: User;
+  @Prop({ type: Types.ObjectId, ref: User.name })
+  user: User | string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Order' }] })
-  orders: Order[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: Order.name }] })
+  orders: Order[] | string[];
 }
 
 export const BikeSchema = SchemaFactory.createForClass(Bike);

@@ -61,9 +61,6 @@ export class User extends Document {
 
   @Prop({ required: true })
   email: Contact<ContactType.EMAIL>;
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Bike' }] })
-  bikes: Bike[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
