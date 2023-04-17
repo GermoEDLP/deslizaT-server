@@ -3,6 +3,7 @@ export enum STATUS_VALUE {
   IN_PROGRESS = 'IN_PROGRESS',
   SUSPEND = 'SUSPEND',
   DONE = 'DONE',
+  CLOSE = 'CLOSE',
 }
 
 export const STATUS_CODE: Record<STATUS_VALUE, number> = {
@@ -10,6 +11,7 @@ export const STATUS_CODE: Record<STATUS_VALUE, number> = {
   [STATUS_VALUE.IN_PROGRESS]: 1,
   [STATUS_VALUE.SUSPEND]: 2,
   [STATUS_VALUE.DONE]: 3,
+  [STATUS_VALUE.CLOSE]: 4,
 };
 
 export class Status {

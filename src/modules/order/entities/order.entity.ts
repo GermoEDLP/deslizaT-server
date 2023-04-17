@@ -3,13 +3,25 @@ import { Document, Types } from 'mongoose';
 import { Article } from 'src/modules/article/entities';
 import { Bike } from 'src/modules/bike/entities';
 import { Status } from '../dto';
+
+export class ArticleItem {
+  article: Article;
+  quantity: number;
+  price: number;
+}
 @Schema({ timestamps: true })
 export class Order extends Document {
+  @Prop()
+  symptoms: string;
+
   @Prop()
   diagnostic: string;
 
   @Prop()
   taskDescription: string;
+
+  @Prop()
+  finalDetails: string;
 
   @Prop()
   departureDate: Date;
@@ -20,8 +32,8 @@ export class Order extends Document {
   @Prop()
   status_history: Status[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: Article.name }] })
-  articles: Article[] | string[];
+  @Prop({ type: [{ type: Object }], default: [] })
+  articles: ArticleItem[];
 
   @Prop({ type: Types.ObjectId, ref: Bike.name })
   bike: Bike | string;

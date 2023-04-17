@@ -35,6 +35,13 @@ export class Address {
 export class Contact<T> {
   type: T;
   value: string;
+  code: number;
+
+  constructor(type: T, value: string, code: number) {
+    this.type = type;
+    this.value = value;
+    this.code = code;
+  }
 }
 
 export enum ContactType {
@@ -50,17 +57,14 @@ export class User extends Document {
   @Prop({ required: true })
   lastname: string;
 
-  @Prop({ required: true, type: Social })
+  @Prop({ required: true, type: Social, default: {} })
   social: Social;
 
   @Prop({ required: true, type: Address })
   address: Address;
 
-  @Prop({ required: true })
-  phone: Contact<ContactType.PHONE>;
-
-  @Prop({ required: true })
-  email: Contact<ContactType.EMAIL>;
+  @Prop({ required: true, default: [] })
+  contacts: Types.Array<Contact<ContactType>>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

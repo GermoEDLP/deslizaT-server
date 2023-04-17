@@ -2,6 +2,7 @@ import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Order } from 'src/modules/order/entities';
 import { User } from 'src/modules/user/entities';
+import { B_SIZE, B_TYPE } from '../dto';
 
 @Schema({ timestamps: true })
 export class Bike extends Document {
@@ -14,16 +15,16 @@ export class Bike extends Document {
   @Prop()
   description: string;
 
-  @Prop()
-  rodado: number;
+  @Prop({ type: Object })
+  size: B_SIZE;
 
-  @Prop()
-  type: string;
+  @Prop({ type: Object })
+  type: B_TYPE;
 
-  @Prop({ type: Types.ObjectId, ref: User.name })
+  @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   user: User | string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: Order.name }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Order' }], default: [] })
   orders: Order[] | string[];
 }
 
