@@ -22,8 +22,11 @@ export const mongooseDatabaseInfo = [
       };
       const { connection, db, host, password, user } = data;
       return {
-        uri: `${connection}://${user}:${password}@${host}/${db}`,
+        uri: `mongodb://localhost:27017/deslizaT`,
       };
+      // return {
+      //   uri: `${connection}://${user}:${password}@${host}/${db}`,
+      // };
     },
     inject: [ConfigService],
   }),

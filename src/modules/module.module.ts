@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { OrderModule } from './order/order.module';
 import { BikeModule } from './bike/bike.module';
 import { ArticleModule } from './article/article.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ArticleModule } from './article/article.module';
     OrderModule,
     BikeModule,
     ArticleModule,
+    AuthModule,
   ],
   exports: [
     CategoriesModule,
@@ -19,6 +21,7 @@ import { ArticleModule } from './article/article.module';
     OrderModule,
     BikeModule,
     ArticleModule,
+    AuthModule,
   ],
 })
 export class ModuleModule {}
