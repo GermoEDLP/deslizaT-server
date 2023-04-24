@@ -17,30 +17,32 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginDto) {
-    const auth = await this.authModel.findOne({ user: dto.user });
+    const auth = await this.authModel.findOne({ username: dto.username });
     if (!auth) throw new BadRequestException('Invalid credentials');
     const valid = await bcrypt.compare(dto.password, auth.password);
     if (!valid) throw new BadRequestException('Invalid credentials');
-    const { _id: id, __v, password, ...rest } = auth;
-    const token = await jwt.sign(
-      {
-        id,
-        ...rest,
-        expendend: Date.now(),
-        expriresIn: '1h',
-        expire: Date.now() + 1000 * 60 * 60,
-      },
-      this.configSvc.get(JWT_SECRET),
-    );
+    const { _id: id, username, name, lastname, email, roles } = auth;
+    const jsonwebtoken = {
+      id,
+      name,
+      lastname,
+      username,
+      email,
+      roles,
+      expendend: Date.now(),
+      expriresIn: '1h',
+      expire: Date.now() + 1000 * 60 * 60,
+    };
+    const token = await jwt.sign(jwt, this.configSvc.get(JWT_SECRET));
 
     return {
       token,
-      user: auth.user,
+      ...jsonwebtoken,
     };
   }
 
   async register(dto: RegisterDto) {
-    const {password, ...rest} = dto;
+    const { password, ...rest } = dto;
     const pass = await bcrypt.hash(password, 10);
     const auth = new this.authModel({
       ...rest,

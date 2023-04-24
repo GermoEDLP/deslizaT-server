@@ -11,7 +11,7 @@ export enum Role {
 @Schema()
 export class Auth extends Document {
   @Prop()
-  user: string;
+  username: string;
   @Prop()
   password: string;
   @Prop()
