@@ -1,6 +1,6 @@
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Document, Types } from 'mongoose';
 import { API_PROP } from '../config';
 import { Bike } from 'src/modules/bike/entities';
@@ -24,12 +24,18 @@ export class Address {
   @IsNotEmpty()
   @ApiProperty(API_PROP.ADDRESS_NUMBER)
   number: string;
+
+  @IsString()
   @ApiProperty(API_PROP.ADDRESS_CITY)
   city: string;
+
+  @IsString()
   @ApiProperty(API_PROP.ADDRESS_FLOOR)
-  floor: number;
+  floor: string;
+  
+  @IsString()
   @ApiProperty(API_PROP.ADDRESS_APPARTMENT)
-  apartment: number;
+  apartment: string;
 }
 
 export class Contact<T> {

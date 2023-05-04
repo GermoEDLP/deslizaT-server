@@ -24,7 +24,6 @@ export class CreateUserDto {
   lastname: string;
 
   @IsObject()
-  @IsNotEmpty()
   @ApiProperty(API_PROP.ADDRESS)
   @Type(() => Address)
   @ValidateNested()
