@@ -1,10 +1,11 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateUserDto, CreateUserDto, QueryFindAllBlankDto } from './dto';
 import { populateQuery } from 'src/common/helpers/populateParams';
 import { Contact, ContactType, User, UserSchema } from './entities';
 import { getFindAllOptions } from '../../common/helpers/optionsFindAll';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -29,27 +30,23 @@ export class UserService {
   }
 
   async findAll(query: QueryFindAllBlankDto) {
-    const [options, page, perPage] = getFindAllOptions(query);
+    const [options] = getFindAllOptions(query);
     const pop = populateQuery(query.populate, UserSchema);
 
     const filters = {
       // ...(type ? { type } : {}),
     };
-    const [total, data] = await Promise.all([
-      this.userModel.countDocuments(filters),
-      this.userModel.find(filters, null, options).populate(pop),
-    ]);
+    const data = await this.userModel
+      .find(filters, null, options)
+      .populate(pop);
 
-    return {
-      page,
-      perPage,
-      total,
-      data,
-    };
+    return data;
   }
 
   async findOne(id: string) {
-    return this.userModel.findById(id).exec();
+    const user = await this.userModel.findById(id).exec();
+    if (!user) throw new NotFoundException('User not found');
+    return user.populate('bikes');
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

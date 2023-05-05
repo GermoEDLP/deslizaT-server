@@ -1,5 +1,5 @@
 import { getFindAllOptions } from '../../common/helpers/optionsFindAll';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -11,40 +11,43 @@ import {
 } from './dto';
 import { populateQuery } from 'src/common/helpers/populateParams';
 import { Bike, BikeSchema } from './entities';
+import { User } from '../user/entities';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class BikeService {
-  constructor(@InjectModel(Bike.name) private bikeModel: Model<Bike>) {}
+  constructor(
+    @InjectModel(Bike.name) private bikeModel: Model<Bike>,
+    private readonly userSvc: UserService,
+  ) {}
 
-  create(createBikeDto: CreateBikeDto) {
+  async create(createBikeDto: CreateBikeDto) {
+    const user = await this.userSvc.findOne(createBikeDto.username);
+    if (!user) throw new NotFoundException('User not found');
     const size = BIKE_SIZE[createBikeDto.size];
     const type = BIKE_TYPE[createBikeDto.type];
-    const blank = new this.bikeModel({
+    const bike = new this.bikeModel({
       ...createBikeDto,
       size,
       type,
     });
-    return blank.save();
+    user.bikes.push(bike._id);
+    await this.userSvc.update(user._id, user);
+    return bike.save();
   }
 
   async findAll(query: QueryFindAllBikeDto) {
-    const [options, page, perPage] = getFindAllOptions(query);
+    const [options] = getFindAllOptions(query);
     const pop = populateQuery(query.populate, BikeSchema);
 
     const filters = {
       // ...(type ? { type } : {}),
     };
-    const [total, data] = await Promise.all([
-      this.bikeModel.countDocuments(filters),
-      this.bikeModel.find(filters, null, options).populate(pop),
-    ]);
+    const data = await this.bikeModel
+      .find(filters, null, options)
+      .populate(pop);
 
-    return {
-      page,
-      perPage,
-      total,
-      data,
-    };
+    return data;
   }
 
   async findOne(id: string) {
