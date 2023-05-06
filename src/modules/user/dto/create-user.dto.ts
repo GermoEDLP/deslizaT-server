@@ -29,17 +29,15 @@ export class CreateUserDto {
   @ValidateNested()
   address: Address;
 
-  @IsString({each: true})
-  @IsArray()
+  @IsString()
   @IsOptional()
   @ApiProperty(API_PROP.PHONE)
-  phones: string[];
+  phone: string;
 
-  @IsString({each: true})
-  @IsArray()
+  @IsString()
   @IsNotEmpty()
   @ApiProperty(API_PROP.EMAIL)
-  emails: string[];
+  email: string;
 
   @IsObject()
   @IsOptional()

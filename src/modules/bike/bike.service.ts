@@ -11,7 +11,6 @@ import {
 } from './dto';
 import { populateQuery } from 'src/common/helpers/populateParams';
 import { Bike, BikeSchema } from './entities';
-import { User } from '../user/entities';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -22,14 +21,11 @@ export class BikeService {
   ) {}
 
   async create(createBikeDto: CreateBikeDto) {
-    const user = await this.userSvc.findOne(createBikeDto.username);
+    const user = await this.userSvc.findOne(createBikeDto.id);
     if (!user) throw new NotFoundException('User not found');
-    const size = BIKE_SIZE[createBikeDto.size];
-    const type = BIKE_TYPE[createBikeDto.type];
     const bike = new this.bikeModel({
       ...createBikeDto,
-      size,
-      type,
+      username: createBikeDto.id,
     });
     user.bikes.push(bike._id);
     await this.userSvc.update(user._id, user);

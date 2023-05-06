@@ -2,10 +2,16 @@ import {
   IsEnum,
   IsMongoId,
   IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { BIKE_SIMPLE_SIZE, BIKE_SIMPLE_TYPE } from './types.dto';
+import {
+  BIKE_SIMPLE_SIZE,
+  BIKE_SIMPLE_TYPE,
+  BIKE_SIZE_OBJ,
+  BIKE_TYPE_OBJ,
+} from './types.dto';
 import { EnumToString } from 'src/common/helpers/enumToString';
 
 export class CreateBikeDto {
@@ -22,18 +28,14 @@ export class CreateBikeDto {
   description: string;
 
   @IsNotEmpty()
-  @IsEnum(BIKE_SIMPLE_SIZE, {
-    message: `Invalid size. Valid values: ${EnumToString(BIKE_SIMPLE_SIZE)}`,
-  })
-  size: number;
+  @IsObject()
+  size: BIKE_SIZE_OBJ;
 
   @IsNotEmpty()
-  @IsEnum(BIKE_SIMPLE_TYPE, {
-    message: `Invalid type. Valid values: ${EnumToString(BIKE_SIMPLE_TYPE)}`,
-  })
-  type: string;
+  @IsObject()
+  type: BIKE_TYPE_OBJ;
 
   @IsString()
   @IsMongoId()
-  username: string;
+  id: string;
 }

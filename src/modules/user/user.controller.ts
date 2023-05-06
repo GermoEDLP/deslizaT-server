@@ -11,7 +11,6 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { QueryFindAllBlankDto, CreateUserDto, UpdateUserDto } from './dto';
-import { API_OP } from './config';
 
 @Controller('user')
 @ApiTags('Usuarios')

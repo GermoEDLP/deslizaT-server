@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateUserDto, CreateUserDto, QueryFindAllBlankDto } from './dto';
 import { populateQuery } from 'src/common/helpers/populateParams';
-import { Contact, ContactType, User, UserSchema } from './entities';
+import { Contact, ContactType, User, UserSchema, UserStatus } from './entities';
 import { getFindAllOptions } from '../../common/helpers/optionsFindAll';
 import { NotFoundError } from 'rxjs';
 
@@ -12,19 +12,9 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   create(createUserDto: CreateUserDto) {
-    const { emails, phones } = createUserDto;
-    const contacts: Contact<ContactType>[] = [];
-    if (emails)
-      emails.forEach((email) =>
-        contacts.push(new Contact(ContactType.EMAIL, email, contacts.length)),
-      );
-    if (phones)
-      phones.forEach((phone) =>
-        contacts.push(new Contact(ContactType.PHONE, phone, contacts.length)),
-      );
     const user = new this.userModel({
       ...createUserDto,
-      contacts,
+      status: UserStatus.ACTIVE,
     });
     return user.save();
   }
@@ -34,7 +24,7 @@ export class UserService {
     const pop = populateQuery(query.populate, UserSchema);
 
     const filters = {
-      // ...(type ? { type } : {}),
+      status: { $ne: UserStatus.DELETED },
     };
     const data = await this.userModel
       .find(filters, null, options)
@@ -56,6 +46,6 @@ export class UserService {
   }
 
   remove(id: string) {
-    return this.userModel.findByIdAndRemove(id).exec();
+    return this.update(id, { status: UserStatus.DELETED });
   }
 }
