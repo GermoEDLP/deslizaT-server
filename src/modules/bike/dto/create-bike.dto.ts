@@ -37,5 +37,5 @@ export class CreateBikeDto {
 
   @IsString()
   @IsMongoId()
-  id: string;
+  user: string;
 }

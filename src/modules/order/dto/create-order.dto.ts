@@ -31,10 +31,8 @@ export class CreateOrderDto {
   @IsString()
   @IsNotEmpty()
   bike: string;
-
-  @IsOptional()
-  @IsEnum(STATUS_VALUE, {
-    message: `Status is not valid. Valid status: ${EnumToString(STATUS_VALUE)}`,
-  })
-  status: STATUS_VALUE;
+  
+  @IsString()
+  @IsNotEmpty()
+  user: string;
 }

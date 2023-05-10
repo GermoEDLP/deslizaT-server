@@ -21,11 +21,11 @@ export class BikeService {
   ) {}
 
   async create(createBikeDto: CreateBikeDto) {
-    const user = await this.userSvc.findOne(createBikeDto.id);
+    const user = await this.userSvc.findOne(createBikeDto.user);
     if (!user) throw new NotFoundException('User not found');
     const bike = new this.bikeModel({
       ...createBikeDto,
-      username: createBikeDto.id,
+      user: createBikeDto.user,
     });
     user.bikes.push(bike._id);
     await this.userSvc.update(user._id, user);

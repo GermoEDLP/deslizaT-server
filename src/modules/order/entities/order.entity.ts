@@ -3,6 +3,7 @@ import { Document, Types } from 'mongoose';
 import { Article } from 'src/modules/article/entities';
 import { Bike } from 'src/modules/bike/entities';
 import { Status } from '../dto';
+import { User } from 'src/modules/user/entities';
 
 export class ArticleItem {
   article: Article;
@@ -37,6 +38,9 @@ export class Order extends Document {
 
   @Prop({ type: Types.ObjectId, ref: Bike.name })
   bike: Bike | string;
+  
+  @Prop({ type: Types.ObjectId, ref: User.name })
+  user: Bike | string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

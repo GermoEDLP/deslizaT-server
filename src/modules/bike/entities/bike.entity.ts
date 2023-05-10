@@ -22,7 +22,7 @@ export class Bike extends Document {
   type: BIKE_TYPE_OBJ;
 
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
-  username: User | string;
+  user: User | string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Order' }], default: [] })
   orders: Order[] | string[];

@@ -8,13 +8,12 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { QueryFindAllOrderDto } from './dto/query-find-all.dto';
-import { API_OP } from './config';
-import { STATUS_VALUE } from './dto';
+import { STATUS_VALUE, UpdateStatusOrderDto } from './dto';
 
 @Controller('order')
 @ApiTags('Ordenes')
@@ -32,18 +31,18 @@ export class OrderController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(id);
+  findOne(@Param('id') id: string, @Query() query: QueryFindAllOrderDto) {
+    return this.orderService.findOne(id, query);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.orderService.update(id, updateOrderDto);
   }
 
-  @Patch('status/:id/:status')
-  changeStatus(@Param('id') id: string, @Param('status') status: STATUS_VALUE) {
-    return this.orderService.changeStatus(id, status);
+  @Patch('status')
+  changeStatus(@Body() updateStatusDto: UpdateStatusOrderDto) {
+    return this.orderService.changeStatus(updateStatusDto);
   }
 
   @Delete(':id')
